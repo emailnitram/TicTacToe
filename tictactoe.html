@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      var mark = 'O';
+      var o = [];
+      var x = [];
+      var winningPossibilities = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]];
+      $('td').on('click',function(e){
+        if($(this).text().length > 0) return false;
+        mark = mark === 'X' ? 'O' : 'X';
+        $(this).text(mark);
+        if(mark === 'X'){
+          x.push(parseInt($(this)[0].id));
+          if(x.length > 2) checkForWinner(x,mark);
+        } else {
+          o.push(parseInt($(this)[0].id));
+          if(o.length > 2) checkForWinner(o,mark);
+        }
+        if(x.length > 4) clearBoard();
+      });
+      function clearBoard(){
+        alert('Game Over');
+        o = [];
+        x = [];
+        $('td').each(function(i,elem){
+          $(elem).empty();
+        });
+      };
+      function checkForWinner(results,mark){
+        for(var i = 0; i < winningPossibilities.length; i++){
+          if(compare(winningPossibilities[i],results)){
+            alert('Winner ' + mark + '!');
+            clearBoard();
+            return false;
+          }
+        }
+      }
+      function compare(ary,results){
+        for(var i = 0; i < ary.length; i++){
+          if(results.indexOf(ary[i]) === -1) return false;
+        };
+        return true;
+      };
+    });
+  </script>
+  <style>
+  td{
+    width: 100px;
+    height: 100px;
+    background: green;
+    text-align: center;
+    font-size: 50px;
+  }
+  </style>
+  <title>Tic Tac Toe</title>
+</head>
+<body>
+<div class="gameboard">
+  <table>
+    <tr><td id="1"></td><td id="2"></td><td id="3"></td></tr>
+    <tr><td id="4"></td><td id="5"></td><td id="6"></td></tr>
+    <tr><td id="7"></td><td id="8"></td><td id="9"></td></tr>
+  </table>
+</div>
+</body>
+</html>
